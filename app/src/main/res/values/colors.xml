@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+
+    <!--<color name="colorBackgroundToday">#76ff03</color>-->
+    <!--<color name="colorBackgroundWeek">#558b2f</color>-->
+
+    <color name="colorDefault">#2e7d32</color>
+    <color name="colorDark">#1b5e20</color>
+    <color name="colorLight">#64dd17</color>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standart_padding">16dp</dimen>
+    <dimen name="top_separator">4dp</dimen>
+    <dimen name="meteo_images_margin_top">4dp</dimen>
+
+    <dimen name="small_icon_dimen">25dp</dimen>
+    <dimen name="recycler_vertical_spacing">16dp</dimen>
+</resources>
