@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JustWeather</string>
+    <string name="menu_title_refresh">Refresh</string>
 </resources>

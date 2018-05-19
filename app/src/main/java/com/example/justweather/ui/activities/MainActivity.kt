@@ -4,12 +4,15 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -30,6 +33,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.appbar_main.*
 
 class MainActivity : MvpAppCompatActivity(),
         MainView, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -58,6 +62,9 @@ class MainActivity : MvpAppCompatActivity(),
     private var mGoogleApiClient: GoogleApiClient? = null
     private lateinit var mLocationRequest: LocationRequest
 
+    private var savedLocation: Location? = null
+
+
     @InjectPresenter
     lateinit var presenter: MainPresenter
 
@@ -66,6 +73,7 @@ class MainActivity : MvpAppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.appbar_main)
         bindViews()
+        setSupportActionBar(toolbar)
 
         presenter.mainScheduler = AndroidSchedulers.mainThread()
         presenter.processScheduler = Schedulers.io()
@@ -80,8 +88,8 @@ class MainActivity : MvpAppCompatActivity(),
                         return
                     }
 
-                    val location = locationResult.lastLocation
-                    presenter.getWeather(location.latitude, location.longitude)
+                    savedLocation = locationResult.lastLocation
+                    refresh()
                     mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
                 }
             }
@@ -93,6 +101,8 @@ class MainActivity : MvpAppCompatActivity(),
 
 
     private fun bindViews() {
+        //TODO: replace field with direct links
+        //progressToday -> progress_today
         progressToday = findViewById(R.id.progress_today)
         progressWeek = findViewById(R.id.progress_week)
         todayLayout = findViewById(R.id.today_layout)
@@ -104,6 +114,30 @@ class MainActivity : MvpAppCompatActivity(),
         weatherView = findViewById(R.id.weather_description)
         recycler = findViewById(R.id.recycler)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.appbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.menu_refresh) {
+            refresh()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun refresh() {
+        if (savedLocation != null) {
+            progressToday.visibility = View.VISIBLE
+            progressWeek.visibility = View.VISIBLE
+            presenter.getWeather(savedLocation?.latitude!!, savedLocation?.longitude!!)
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
