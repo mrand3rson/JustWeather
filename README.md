@@ -1,3 +1,3 @@
 # JustWeather
 
-A simple application on Kotlin getting the forecast from OpenWeather and saving the last response for offline work.
+A simple application on Kotlin that gets the forecast from OpenWeather and saves the last response for offline work.
